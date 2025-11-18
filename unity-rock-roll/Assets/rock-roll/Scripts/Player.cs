@@ -36,7 +36,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    bool IsGrounded()
+   public  bool IsGrounded()
     {
         float extraHeight = 0.1f;
         RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, GetComponent<CircleCollider2D>().radius + extraHeight, groundLayer);
