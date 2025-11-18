@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
         // Roll left/right
         if (Input.GetKey(KeyCode.RightArrow))
@@ -29,18 +29,31 @@ public class Player : MonoBehaviour
             rb.AddTorque(torqueForce); // counter-clockwise
         }
 
-        // Jump
-        if (Input.GetKeyDown(KeyCode.UpArrow) && IsGrounded())
+       
+    }
+
+    void Update()
+    {
+         // Jump
+         // GetKeyDown() does not work in FixedUpdate()
+        if (Input.GetKeyDown(KeyCode.UpArrow)) 
         {
-            rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            if (IsGrounded())
+            {
+                rb.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
+            }
         }
     }
 
-   public  bool IsGrounded()
+    public bool IsGrounded()
     {
         float extraHeight = 0.1f;
-        RaycastHit2D hit = Physics2D.Raycast(transform.position, Vector2.down, GetComponent<CircleCollider2D>().radius + extraHeight, groundLayer);
+        RaycastHit2D hit = Physics2D.Raycast(
+            transform.position,
+            Vector2.down,
+            GetComponent<CircleCollider2D>().radius + extraHeight,
+            groundLayer
+        );
         return hit.collider != null;
     }
-
 }
